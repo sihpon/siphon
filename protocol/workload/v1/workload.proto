@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package workload.v1;
+
+option go_package = "workload/v1;workloadv1";
+
+service WorkloadService {
+  rpc ListWorkloads(ListWorkloadsRequest) returns (ListWorkloadsResponse) {}
+  rpc GetWorkload(GetWorkloadRequest) returns (GetWorkloadResponse) {}
+  rpc CreateWorkload(CreateWorkloadRequest) returns (CreateWorkloadResponse) {}
+  rpc UpdateWorkload(UpdateWorkloadRequest) returns (UpdateWorkloadResponse) {}
+  rpc DeleteWorkload(DeleteWorkloadRequest) returns (DeleteWorkloadResponse) {}
+}
+
+message ListWorkloadsRequest {
+}
+
+message ListWorkloadsResponse {
+  repeated Workload workloads = 1;
+}
+
+message GetWorkloadRequest {
+  string id = 1;
+}
+
+message GetWorkloadResponse {
+  Workload workload = 1;
+}
+
+message CreateWorkloadRequest {
+  Workload workload = 1;
+}
+
+message CreateWorkloadResponse {
+  Workload workload = 1;
+}
+
+message UpdateWorkloadRequest {
+  Workload workload = 1;
+}
+
+message UpdateWorkloadResponse {
+  Workload workload = 1;
+}
+
+message DeleteWorkloadRequest {
+  string id = 1;
+}
+
+message DeleteWorkloadResponse {
+}
+
+message Workload {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string version = 4;
+  string status = 5;
+  string url = 6;
+}

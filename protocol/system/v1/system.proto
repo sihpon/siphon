@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package system.v1;
+
+option go_package = "system/v1;systemv1";
+
+service SystemService {
+  rpc Health(HealthRequest) returns (HealthResponse) {}
+}
+
+message HealthRequest {
+}
+
+message HealthResponse {
+  string status = 1;
+}
