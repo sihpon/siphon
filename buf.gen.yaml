@@ -3,11 +3,11 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/siphon/siphon/gen
+      value: github.com/siphon/siphon/generated
 plugins:
   - local: protoc-gen-go
-    out: gen
+    out: generated
     opt: paths=source_relative
   - local: protoc-gen-connect-go
-    out: gen
+    out: generated
     opt: paths=source_relative

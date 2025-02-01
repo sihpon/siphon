@@ -8,7 +8,7 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	v1 "github.com/siphon/siphon/gen/system/v1"
+	v1 "github.com/siphon/siphon/generated/system/v1"
 	http "net/http"
 	strings "strings"
 )

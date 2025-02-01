@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"connectrpc.com/connect"
-	workloadv1 "github.com/siphon/siphon/gen/workload/v1"
+	workloadv1 "github.com/siphon/siphon/generated/workload/v1"
 )
 
 type WorkloadService struct{}

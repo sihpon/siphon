@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/siphon/siphon/gen/system/v1/systemv1connect"
-	"github.com/siphon/siphon/gen/workload/v1/workloadv1connect"
+	"github.com/siphon/siphon/generated/system/v1/systemv1connect"
+	"github.com/siphon/siphon/generated/workload/v1/workloadv1connect"
 	"github.com/siphon/siphon/internal/service/system"
 	"github.com/siphon/siphon/internal/service/workload"
 	"golang.org/x/net/http2"

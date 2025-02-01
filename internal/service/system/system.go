@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"connectrpc.com/connect"
-	systemv1 "github.com/siphon/siphon/gen/system/v1"
+	systemv1 "github.com/siphon/siphon/generated/system/v1"
 )
 
 type SystemService struct{}
