@@ -3,56 +3,112 @@ package workload
 import (
 	"context"
 
-	"connectrpc.com/connect"
 	workloadv1 "github.com/siphon/siphon/generated/workload/v1"
+	"github.com/siphon/siphon/internal/model"
+	"gorm.io/gorm"
 )
 
-type WorkloadService struct{}
-
-func (s *WorkloadService) List(
-	context.Context,
-	*connect.Request[workloadv1.ListRequest],
-) (*connect.Response[workloadv1.ListResponse], error) {
-	return connect.NewResponse(&workloadv1.ListResponse{
-		Workloads: []*workloadv1.Workload{
-			{
-				Id:          "hoge",
-				Name:        "hoge",
-				Description: "",
-				Version:     "v2.0.0",
-				Status:      "",
-				Url:         "",
-			},
-		},
-	}), nil
+type WorkloadService struct {
+	db *gorm.DB
 }
 
-func (s *WorkloadService) Get(
-	context.Context,
-	*connect.Request[workloadv1.GetRequest],
-) (*connect.Response[workloadv1.GetResponse], error) {
-	return connect.NewResponse(&workloadv1.GetResponse{
-		Workload: &workloadv1.Workload{},
-	}), nil
+func NewWorkloadService(db *gorm.DB) *WorkloadService {
+	return &WorkloadService{db: db}
 }
 
-func (s *WorkloadService) Create(
-	context.Context,
-	*connect.Request[workloadv1.CreateRequest],
-) (*connect.Response[workloadv1.CreateResponse], error) {
-	return connect.NewResponse(&workloadv1.CreateResponse{}), nil
+var _ Workloader = &WorkloadService{}
+
+func (s *WorkloadService) List(context.Context, *workloadv1.ListRequest) (*workloadv1.ListResponse, error) {
+	workloads := []*model.Workload{}
+	if err := s.db.Find(&workloads).Error; err != nil {
+		return nil, err
+	}
+
+	response := []*workloadv1.Workload{}
+	for _, workload := range workloads {
+		response = append(response, &workloadv1.Workload{
+			Id:          workload.ID,
+			Name:        workload.Name,
+			Description: workload.Description,
+			Version:     workload.Version,
+		})
+	}
+
+	return &workloadv1.ListResponse{
+		Workloads: response,
+	}, nil
 }
 
-func (s *WorkloadService) Update(
-	context.Context,
-	*connect.Request[workloadv1.UpdateRequest],
-) (*connect.Response[workloadv1.UpdateResponse], error) {
-	return connect.NewResponse(&workloadv1.UpdateResponse{}), nil
+func (s *WorkloadService) Get(ctx context.Context, request *workloadv1.GetRequest) (*workloadv1.GetResponse, error) {
+	workload := &model.Workload{}
+	if err := s.db.First(&workload, request.Id).Error; err != nil {
+		return nil, err
+	}
+
+	response := &workloadv1.Workload{
+		Id:          workload.ID,
+		Name:        workload.Name,
+		Description: workload.Description,
+		Version:     workload.Version,
+	}
+
+	return &workloadv1.GetResponse{
+		Workload: response,
+	}, nil
 }
 
-func (s *WorkloadService) Delete(
-	context.Context,
-	*connect.Request[workloadv1.DeleteRequest],
-) (*connect.Response[workloadv1.DeleteResponse], error) {
-	return connect.NewResponse(&workloadv1.DeleteResponse{}), nil
+func (s *WorkloadService) Create(ctx context.Context, request *workloadv1.CreateRequest) (*workloadv1.CreateResponse, error) {
+	workload := &model.Workload{
+		ID:          request.Workload.Id,
+		Name:        request.Workload.Name,
+		Description: request.Workload.Description,
+		Version:     request.Workload.Version,
+	}
+
+	if err := s.db.Create(&workload).Error; err != nil {
+		return nil, err
+	}
+
+	response := &workloadv1.Workload{
+		Id:          workload.ID,
+		Name:        workload.Name,
+		Description: workload.Description,
+		Version:     workload.Version,
+	}
+
+	return &workloadv1.CreateResponse{
+		Workload: response,
+	}, nil
+}
+
+func (s *WorkloadService) Update(ctx context.Context, request *workloadv1.UpdateRequest) (*workloadv1.UpdateResponse, error) {
+	workload := &model.Workload{}
+	if err := s.db.First(&workload, request.Workload.Id).Error; err != nil {
+		return nil, err
+	}
+
+	workload.Name = request.Workload.Name
+	workload.Description = request.Workload.Description
+	workload.Version = request.Workload.Version
+
+	if err := s.db.Save(&workload).Error; err != nil {
+		return nil, err
+	}
+
+	return &workloadv1.UpdateResponse{
+		Workload: request.Workload,
+	}, nil
+}
+
+func (s *WorkloadService) Delete(ctx context.Context, request *workloadv1.DeleteRequest) (*workloadv1.DeleteResponse, error) {
+	workload := &model.Workload{}
+	if err := s.db.First(&workload, request.Id).Error; err != nil {
+		return nil, err
+	}
+
+	if err := s.db.Delete(&workload).Error; err != nil {
+		return nil, err
+	}
+
+	return &workloadv1.DeleteResponse{}, nil
 }

@@ -1,0 +1,23 @@
+services:
+    mysql:
+      container_name: mysql
+      image: mysql:latest
+      environment:
+        - MYSQL_USER=local
+        - MYSQL_PASSWORD=local
+        - MYSQL_DATABASE=local
+        - MYSQL_RANDOM_ROOT_PASSWORD=true
+      ports:
+      - '3306:3306'
+    test_mysql:
+      container_name: test_mysql
+      image: mysql:latest
+      environment:
+        - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      ports:
+      - '3307:3306'
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
