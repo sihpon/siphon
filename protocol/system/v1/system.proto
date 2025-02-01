@@ -8,8 +8,7 @@ service SystemService {
   rpc Health(HealthRequest) returns (HealthResponse) {}
 }
 
-message HealthRequest {
-}
+message HealthRequest {}
 
 message HealthResponse {
   string status = 1;
