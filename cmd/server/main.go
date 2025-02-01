@@ -15,12 +15,23 @@ import (
 
 type GreetServer struct{}
 
-func (s *GreetServer) Greet(
+func (s *GreetServer) Health(
+	context.Context,
+	*connect.Request[greetv1.HealthRequest],
+) (*connect.Response[greetv1.HealthResponse], error) {
+	return connect.NewResponse(&greetv1.HealthResponse{
+		Status: "OK",
+	}), nil
+}
+
+var _ greetv1connect.SiphonServiceHandler = (*GreetServer)(nil)
+
+func (s *GreetServer) Echo(
 	ctx context.Context,
-	req *connect.Request[greetv1.GreetRequest],
-) (*connect.Response[greetv1.GreetResponse], error) {
+	req *connect.Request[greetv1.EchoRequest],
+) (*connect.Response[greetv1.EchoResponse], error) {
 	log.Println("Request headers: ", req.Header())
-	res := connect.NewResponse(&greetv1.GreetResponse{
+	res := connect.NewResponse(&greetv1.EchoResponse{
 		Greeting: fmt.Sprintf("Hello, %s!", req.Msg.Name),
 	})
 	res.Header().Set("Greet-Version", "v1")
@@ -30,7 +41,7 @@ func (s *GreetServer) Greet(
 func main() {
 	greeter := &GreetServer{}
 	mux := http.NewServeMux()
-	path, handler := greetv1connect.NewGreetServiceHandler(greeter)
+	path, handler := greetv1connect.NewSiphonServiceHandler(greeter)
 	mux.Handle(path, handler)
 	http.ListenAndServe(
 		"localhost:8080",

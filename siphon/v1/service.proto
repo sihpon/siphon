@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "siphon/v1/siphon.proto";
+
+package siphon.v1;
+
+option go_package = "github.com/siphon/siphon/gen/siphon/v1;greetv1";
+
+service SiphonService {
+  rpc Echo(EchoRequest) returns (EchoResponse) {}
+  rpc Health(HealthRequest) returns (HealthResponse) {}
+}
