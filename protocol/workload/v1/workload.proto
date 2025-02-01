@@ -5,49 +5,49 @@ package workload.v1;
 option go_package = "workload/v1;workloadv1";
 
 service WorkloadService {
-  rpc ListWorkloads(ListWorkloadsRequest) returns (ListWorkloadsResponse) {}
-  rpc GetWorkload(GetWorkloadRequest) returns (GetWorkloadResponse) {}
-  rpc CreateWorkload(CreateWorkloadRequest) returns (CreateWorkloadResponse) {}
-  rpc UpdateWorkload(UpdateWorkloadRequest) returns (UpdateWorkloadResponse) {}
-  rpc DeleteWorkload(DeleteWorkloadRequest) returns (DeleteWorkloadResponse) {}
+  rpc List(ListRequest) returns (ListResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
 }
 
-message ListWorkloadsRequest {
+message ListRequest {
 }
 
-message ListWorkloadsResponse {
+message ListResponse {
   repeated Workload workloads = 1;
 }
 
-message GetWorkloadRequest {
+message GetRequest {
   string id = 1;
 }
 
-message GetWorkloadResponse {
+message GetResponse {
   Workload workload = 1;
 }
 
-message CreateWorkloadRequest {
+message CreateRequest {
   Workload workload = 1;
 }
 
-message CreateWorkloadResponse {
+message CreateResponse {
   Workload workload = 1;
 }
 
-message UpdateWorkloadRequest {
+message UpdateRequest {
   Workload workload = 1;
 }
 
-message UpdateWorkloadResponse {
+message UpdateResponse {
   Workload workload = 1;
 }
 
-message DeleteWorkloadRequest {
+message DeleteRequest {
   string id = 1;
 }
 
-message DeleteWorkloadResponse {
+message DeleteResponse {
 }
 
 message Workload {

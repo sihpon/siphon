@@ -9,11 +9,11 @@ import (
 
 type WorkloadService struct{}
 
-func (s *WorkloadService) ListWorkloads(
+func (s *WorkloadService) List(
 	context.Context,
-	*connect.Request[workloadv1.ListWorkloadsRequest],
-) (*connect.Response[workloadv1.ListWorkloadsResponse], error) {
-	return connect.NewResponse(&workloadv1.ListWorkloadsResponse{
+	*connect.Request[workloadv1.ListRequest],
+) (*connect.Response[workloadv1.ListResponse], error) {
+	return connect.NewResponse(&workloadv1.ListResponse{
 		Workloads: []*workloadv1.Workload{
 			{
 				Id:          "hoge",
@@ -27,32 +27,32 @@ func (s *WorkloadService) ListWorkloads(
 	}), nil
 }
 
-func (s *WorkloadService) GetWorkload(
+func (s *WorkloadService) Get(
 	context.Context,
-	*connect.Request[workloadv1.GetWorkloadRequest],
-) (*connect.Response[workloadv1.GetWorkloadResponse], error) {
-	return connect.NewResponse(&workloadv1.GetWorkloadResponse{
+	*connect.Request[workloadv1.GetRequest],
+) (*connect.Response[workloadv1.GetResponse], error) {
+	return connect.NewResponse(&workloadv1.GetResponse{
 		Workload: &workloadv1.Workload{},
 	}), nil
 }
 
-func (s *WorkloadService) CreateWorkload(
+func (s *WorkloadService) Create(
 	context.Context,
-	*connect.Request[workloadv1.CreateWorkloadRequest],
-) (*connect.Response[workloadv1.CreateWorkloadResponse], error) {
-	return connect.NewResponse(&workloadv1.CreateWorkloadResponse{}), nil
+	*connect.Request[workloadv1.CreateRequest],
+) (*connect.Response[workloadv1.CreateResponse], error) {
+	return connect.NewResponse(&workloadv1.CreateResponse{}), nil
 }
 
-func (s *WorkloadService) UpdateWorkload(
+func (s *WorkloadService) Update(
 	context.Context,
-	*connect.Request[workloadv1.UpdateWorkloadRequest],
-) (*connect.Response[workloadv1.UpdateWorkloadResponse], error) {
-	return connect.NewResponse(&workloadv1.UpdateWorkloadResponse{}), nil
+	*connect.Request[workloadv1.UpdateRequest],
+) (*connect.Response[workloadv1.UpdateResponse], error) {
+	return connect.NewResponse(&workloadv1.UpdateResponse{}), nil
 }
 
-func (s *WorkloadService) DeleteWorkload(
+func (s *WorkloadService) Delete(
 	context.Context,
-	*connect.Request[workloadv1.DeleteWorkloadRequest],
-) (*connect.Response[workloadv1.DeleteWorkloadResponse], error) {
-	return connect.NewResponse(&workloadv1.DeleteWorkloadResponse{}), nil
+	*connect.Request[workloadv1.DeleteRequest],
+) (*connect.Response[workloadv1.DeleteResponse], error) {
+	return connect.NewResponse(&workloadv1.DeleteResponse{}), nil
 }

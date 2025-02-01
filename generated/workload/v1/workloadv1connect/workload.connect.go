@@ -33,30 +33,25 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// WorkloadServiceListWorkloadsProcedure is the fully-qualified name of the WorkloadService's
-	// ListWorkloads RPC.
-	WorkloadServiceListWorkloadsProcedure = "/workload.v1.WorkloadService/ListWorkloads"
-	// WorkloadServiceGetWorkloadProcedure is the fully-qualified name of the WorkloadService's
-	// GetWorkload RPC.
-	WorkloadServiceGetWorkloadProcedure = "/workload.v1.WorkloadService/GetWorkload"
-	// WorkloadServiceCreateWorkloadProcedure is the fully-qualified name of the WorkloadService's
-	// CreateWorkload RPC.
-	WorkloadServiceCreateWorkloadProcedure = "/workload.v1.WorkloadService/CreateWorkload"
-	// WorkloadServiceUpdateWorkloadProcedure is the fully-qualified name of the WorkloadService's
-	// UpdateWorkload RPC.
-	WorkloadServiceUpdateWorkloadProcedure = "/workload.v1.WorkloadService/UpdateWorkload"
-	// WorkloadServiceDeleteWorkloadProcedure is the fully-qualified name of the WorkloadService's
-	// DeleteWorkload RPC.
-	WorkloadServiceDeleteWorkloadProcedure = "/workload.v1.WorkloadService/DeleteWorkload"
+	// WorkloadServiceListProcedure is the fully-qualified name of the WorkloadService's List RPC.
+	WorkloadServiceListProcedure = "/workload.v1.WorkloadService/List"
+	// WorkloadServiceGetProcedure is the fully-qualified name of the WorkloadService's Get RPC.
+	WorkloadServiceGetProcedure = "/workload.v1.WorkloadService/Get"
+	// WorkloadServiceCreateProcedure is the fully-qualified name of the WorkloadService's Create RPC.
+	WorkloadServiceCreateProcedure = "/workload.v1.WorkloadService/Create"
+	// WorkloadServiceUpdateProcedure is the fully-qualified name of the WorkloadService's Update RPC.
+	WorkloadServiceUpdateProcedure = "/workload.v1.WorkloadService/Update"
+	// WorkloadServiceDeleteProcedure is the fully-qualified name of the WorkloadService's Delete RPC.
+	WorkloadServiceDeleteProcedure = "/workload.v1.WorkloadService/Delete"
 )
 
 // WorkloadServiceClient is a client for the workload.v1.WorkloadService service.
 type WorkloadServiceClient interface {
-	ListWorkloads(context.Context, *connect.Request[v1.ListWorkloadsRequest]) (*connect.Response[v1.ListWorkloadsResponse], error)
-	GetWorkload(context.Context, *connect.Request[v1.GetWorkloadRequest]) (*connect.Response[v1.GetWorkloadResponse], error)
-	CreateWorkload(context.Context, *connect.Request[v1.CreateWorkloadRequest]) (*connect.Response[v1.CreateWorkloadResponse], error)
-	UpdateWorkload(context.Context, *connect.Request[v1.UpdateWorkloadRequest]) (*connect.Response[v1.UpdateWorkloadResponse], error)
-	DeleteWorkload(context.Context, *connect.Request[v1.DeleteWorkloadRequest]) (*connect.Response[v1.DeleteWorkloadResponse], error)
+	List(context.Context, *connect.Request[v1.ListRequest]) (*connect.Response[v1.ListResponse], error)
+	Get(context.Context, *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error)
+	Create(context.Context, *connect.Request[v1.CreateRequest]) (*connect.Response[v1.CreateResponse], error)
+	Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error)
+	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error)
 }
 
 // NewWorkloadServiceClient constructs a client for the workload.v1.WorkloadService service. By
@@ -70,34 +65,34 @@ func NewWorkloadServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 	baseURL = strings.TrimRight(baseURL, "/")
 	workloadServiceMethods := v1.File_workload_v1_workload_proto.Services().ByName("WorkloadService").Methods()
 	return &workloadServiceClient{
-		listWorkloads: connect.NewClient[v1.ListWorkloadsRequest, v1.ListWorkloadsResponse](
+		list: connect.NewClient[v1.ListRequest, v1.ListResponse](
 			httpClient,
-			baseURL+WorkloadServiceListWorkloadsProcedure,
-			connect.WithSchema(workloadServiceMethods.ByName("ListWorkloads")),
+			baseURL+WorkloadServiceListProcedure,
+			connect.WithSchema(workloadServiceMethods.ByName("List")),
 			connect.WithClientOptions(opts...),
 		),
-		getWorkload: connect.NewClient[v1.GetWorkloadRequest, v1.GetWorkloadResponse](
+		get: connect.NewClient[v1.GetRequest, v1.GetResponse](
 			httpClient,
-			baseURL+WorkloadServiceGetWorkloadProcedure,
-			connect.WithSchema(workloadServiceMethods.ByName("GetWorkload")),
+			baseURL+WorkloadServiceGetProcedure,
+			connect.WithSchema(workloadServiceMethods.ByName("Get")),
 			connect.WithClientOptions(opts...),
 		),
-		createWorkload: connect.NewClient[v1.CreateWorkloadRequest, v1.CreateWorkloadResponse](
+		create: connect.NewClient[v1.CreateRequest, v1.CreateResponse](
 			httpClient,
-			baseURL+WorkloadServiceCreateWorkloadProcedure,
-			connect.WithSchema(workloadServiceMethods.ByName("CreateWorkload")),
+			baseURL+WorkloadServiceCreateProcedure,
+			connect.WithSchema(workloadServiceMethods.ByName("Create")),
 			connect.WithClientOptions(opts...),
 		),
-		updateWorkload: connect.NewClient[v1.UpdateWorkloadRequest, v1.UpdateWorkloadResponse](
+		update: connect.NewClient[v1.UpdateRequest, v1.UpdateResponse](
 			httpClient,
-			baseURL+WorkloadServiceUpdateWorkloadProcedure,
-			connect.WithSchema(workloadServiceMethods.ByName("UpdateWorkload")),
+			baseURL+WorkloadServiceUpdateProcedure,
+			connect.WithSchema(workloadServiceMethods.ByName("Update")),
 			connect.WithClientOptions(opts...),
 		),
-		deleteWorkload: connect.NewClient[v1.DeleteWorkloadRequest, v1.DeleteWorkloadResponse](
+		delete: connect.NewClient[v1.DeleteRequest, v1.DeleteResponse](
 			httpClient,
-			baseURL+WorkloadServiceDeleteWorkloadProcedure,
-			connect.WithSchema(workloadServiceMethods.ByName("DeleteWorkload")),
+			baseURL+WorkloadServiceDeleteProcedure,
+			connect.WithSchema(workloadServiceMethods.ByName("Delete")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -105,45 +100,45 @@ func NewWorkloadServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // workloadServiceClient implements WorkloadServiceClient.
 type workloadServiceClient struct {
-	listWorkloads  *connect.Client[v1.ListWorkloadsRequest, v1.ListWorkloadsResponse]
-	getWorkload    *connect.Client[v1.GetWorkloadRequest, v1.GetWorkloadResponse]
-	createWorkload *connect.Client[v1.CreateWorkloadRequest, v1.CreateWorkloadResponse]
-	updateWorkload *connect.Client[v1.UpdateWorkloadRequest, v1.UpdateWorkloadResponse]
-	deleteWorkload *connect.Client[v1.DeleteWorkloadRequest, v1.DeleteWorkloadResponse]
+	list   *connect.Client[v1.ListRequest, v1.ListResponse]
+	get    *connect.Client[v1.GetRequest, v1.GetResponse]
+	create *connect.Client[v1.CreateRequest, v1.CreateResponse]
+	update *connect.Client[v1.UpdateRequest, v1.UpdateResponse]
+	delete *connect.Client[v1.DeleteRequest, v1.DeleteResponse]
 }
 
-// ListWorkloads calls workload.v1.WorkloadService.ListWorkloads.
-func (c *workloadServiceClient) ListWorkloads(ctx context.Context, req *connect.Request[v1.ListWorkloadsRequest]) (*connect.Response[v1.ListWorkloadsResponse], error) {
-	return c.listWorkloads.CallUnary(ctx, req)
+// List calls workload.v1.WorkloadService.List.
+func (c *workloadServiceClient) List(ctx context.Context, req *connect.Request[v1.ListRequest]) (*connect.Response[v1.ListResponse], error) {
+	return c.list.CallUnary(ctx, req)
 }
 
-// GetWorkload calls workload.v1.WorkloadService.GetWorkload.
-func (c *workloadServiceClient) GetWorkload(ctx context.Context, req *connect.Request[v1.GetWorkloadRequest]) (*connect.Response[v1.GetWorkloadResponse], error) {
-	return c.getWorkload.CallUnary(ctx, req)
+// Get calls workload.v1.WorkloadService.Get.
+func (c *workloadServiceClient) Get(ctx context.Context, req *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error) {
+	return c.get.CallUnary(ctx, req)
 }
 
-// CreateWorkload calls workload.v1.WorkloadService.CreateWorkload.
-func (c *workloadServiceClient) CreateWorkload(ctx context.Context, req *connect.Request[v1.CreateWorkloadRequest]) (*connect.Response[v1.CreateWorkloadResponse], error) {
-	return c.createWorkload.CallUnary(ctx, req)
+// Create calls workload.v1.WorkloadService.Create.
+func (c *workloadServiceClient) Create(ctx context.Context, req *connect.Request[v1.CreateRequest]) (*connect.Response[v1.CreateResponse], error) {
+	return c.create.CallUnary(ctx, req)
 }
 
-// UpdateWorkload calls workload.v1.WorkloadService.UpdateWorkload.
-func (c *workloadServiceClient) UpdateWorkload(ctx context.Context, req *connect.Request[v1.UpdateWorkloadRequest]) (*connect.Response[v1.UpdateWorkloadResponse], error) {
-	return c.updateWorkload.CallUnary(ctx, req)
+// Update calls workload.v1.WorkloadService.Update.
+func (c *workloadServiceClient) Update(ctx context.Context, req *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error) {
+	return c.update.CallUnary(ctx, req)
 }
 
-// DeleteWorkload calls workload.v1.WorkloadService.DeleteWorkload.
-func (c *workloadServiceClient) DeleteWorkload(ctx context.Context, req *connect.Request[v1.DeleteWorkloadRequest]) (*connect.Response[v1.DeleteWorkloadResponse], error) {
-	return c.deleteWorkload.CallUnary(ctx, req)
+// Delete calls workload.v1.WorkloadService.Delete.
+func (c *workloadServiceClient) Delete(ctx context.Context, req *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error) {
+	return c.delete.CallUnary(ctx, req)
 }
 
 // WorkloadServiceHandler is an implementation of the workload.v1.WorkloadService service.
 type WorkloadServiceHandler interface {
-	ListWorkloads(context.Context, *connect.Request[v1.ListWorkloadsRequest]) (*connect.Response[v1.ListWorkloadsResponse], error)
-	GetWorkload(context.Context, *connect.Request[v1.GetWorkloadRequest]) (*connect.Response[v1.GetWorkloadResponse], error)
-	CreateWorkload(context.Context, *connect.Request[v1.CreateWorkloadRequest]) (*connect.Response[v1.CreateWorkloadResponse], error)
-	UpdateWorkload(context.Context, *connect.Request[v1.UpdateWorkloadRequest]) (*connect.Response[v1.UpdateWorkloadResponse], error)
-	DeleteWorkload(context.Context, *connect.Request[v1.DeleteWorkloadRequest]) (*connect.Response[v1.DeleteWorkloadResponse], error)
+	List(context.Context, *connect.Request[v1.ListRequest]) (*connect.Response[v1.ListResponse], error)
+	Get(context.Context, *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error)
+	Create(context.Context, *connect.Request[v1.CreateRequest]) (*connect.Response[v1.CreateResponse], error)
+	Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error)
+	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error)
 }
 
 // NewWorkloadServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -153,48 +148,48 @@ type WorkloadServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewWorkloadServiceHandler(svc WorkloadServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	workloadServiceMethods := v1.File_workload_v1_workload_proto.Services().ByName("WorkloadService").Methods()
-	workloadServiceListWorkloadsHandler := connect.NewUnaryHandler(
-		WorkloadServiceListWorkloadsProcedure,
-		svc.ListWorkloads,
-		connect.WithSchema(workloadServiceMethods.ByName("ListWorkloads")),
+	workloadServiceListHandler := connect.NewUnaryHandler(
+		WorkloadServiceListProcedure,
+		svc.List,
+		connect.WithSchema(workloadServiceMethods.ByName("List")),
 		connect.WithHandlerOptions(opts...),
 	)
-	workloadServiceGetWorkloadHandler := connect.NewUnaryHandler(
-		WorkloadServiceGetWorkloadProcedure,
-		svc.GetWorkload,
-		connect.WithSchema(workloadServiceMethods.ByName("GetWorkload")),
+	workloadServiceGetHandler := connect.NewUnaryHandler(
+		WorkloadServiceGetProcedure,
+		svc.Get,
+		connect.WithSchema(workloadServiceMethods.ByName("Get")),
 		connect.WithHandlerOptions(opts...),
 	)
-	workloadServiceCreateWorkloadHandler := connect.NewUnaryHandler(
-		WorkloadServiceCreateWorkloadProcedure,
-		svc.CreateWorkload,
-		connect.WithSchema(workloadServiceMethods.ByName("CreateWorkload")),
+	workloadServiceCreateHandler := connect.NewUnaryHandler(
+		WorkloadServiceCreateProcedure,
+		svc.Create,
+		connect.WithSchema(workloadServiceMethods.ByName("Create")),
 		connect.WithHandlerOptions(opts...),
 	)
-	workloadServiceUpdateWorkloadHandler := connect.NewUnaryHandler(
-		WorkloadServiceUpdateWorkloadProcedure,
-		svc.UpdateWorkload,
-		connect.WithSchema(workloadServiceMethods.ByName("UpdateWorkload")),
+	workloadServiceUpdateHandler := connect.NewUnaryHandler(
+		WorkloadServiceUpdateProcedure,
+		svc.Update,
+		connect.WithSchema(workloadServiceMethods.ByName("Update")),
 		connect.WithHandlerOptions(opts...),
 	)
-	workloadServiceDeleteWorkloadHandler := connect.NewUnaryHandler(
-		WorkloadServiceDeleteWorkloadProcedure,
-		svc.DeleteWorkload,
-		connect.WithSchema(workloadServiceMethods.ByName("DeleteWorkload")),
+	workloadServiceDeleteHandler := connect.NewUnaryHandler(
+		WorkloadServiceDeleteProcedure,
+		svc.Delete,
+		connect.WithSchema(workloadServiceMethods.ByName("Delete")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/workload.v1.WorkloadService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case WorkloadServiceListWorkloadsProcedure:
-			workloadServiceListWorkloadsHandler.ServeHTTP(w, r)
-		case WorkloadServiceGetWorkloadProcedure:
-			workloadServiceGetWorkloadHandler.ServeHTTP(w, r)
-		case WorkloadServiceCreateWorkloadProcedure:
-			workloadServiceCreateWorkloadHandler.ServeHTTP(w, r)
-		case WorkloadServiceUpdateWorkloadProcedure:
-			workloadServiceUpdateWorkloadHandler.ServeHTTP(w, r)
-		case WorkloadServiceDeleteWorkloadProcedure:
-			workloadServiceDeleteWorkloadHandler.ServeHTTP(w, r)
+		case WorkloadServiceListProcedure:
+			workloadServiceListHandler.ServeHTTP(w, r)
+		case WorkloadServiceGetProcedure:
+			workloadServiceGetHandler.ServeHTTP(w, r)
+		case WorkloadServiceCreateProcedure:
+			workloadServiceCreateHandler.ServeHTTP(w, r)
+		case WorkloadServiceUpdateProcedure:
+			workloadServiceUpdateHandler.ServeHTTP(w, r)
+		case WorkloadServiceDeleteProcedure:
+			workloadServiceDeleteHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -204,22 +199,22 @@ func NewWorkloadServiceHandler(svc WorkloadServiceHandler, opts ...connect.Handl
 // UnimplementedWorkloadServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedWorkloadServiceHandler struct{}
 
-func (UnimplementedWorkloadServiceHandler) ListWorkloads(context.Context, *connect.Request[v1.ListWorkloadsRequest]) (*connect.Response[v1.ListWorkloadsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.ListWorkloads is not implemented"))
+func (UnimplementedWorkloadServiceHandler) List(context.Context, *connect.Request[v1.ListRequest]) (*connect.Response[v1.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.List is not implemented"))
 }
 
-func (UnimplementedWorkloadServiceHandler) GetWorkload(context.Context, *connect.Request[v1.GetWorkloadRequest]) (*connect.Response[v1.GetWorkloadResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.GetWorkload is not implemented"))
+func (UnimplementedWorkloadServiceHandler) Get(context.Context, *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.Get is not implemented"))
 }
 
-func (UnimplementedWorkloadServiceHandler) CreateWorkload(context.Context, *connect.Request[v1.CreateWorkloadRequest]) (*connect.Response[v1.CreateWorkloadResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.CreateWorkload is not implemented"))
+func (UnimplementedWorkloadServiceHandler) Create(context.Context, *connect.Request[v1.CreateRequest]) (*connect.Response[v1.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.Create is not implemented"))
 }
 
-func (UnimplementedWorkloadServiceHandler) UpdateWorkload(context.Context, *connect.Request[v1.UpdateWorkloadRequest]) (*connect.Response[v1.UpdateWorkloadResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.UpdateWorkload is not implemented"))
+func (UnimplementedWorkloadServiceHandler) Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.Update is not implemented"))
 }
 
-func (UnimplementedWorkloadServiceHandler) DeleteWorkload(context.Context, *connect.Request[v1.DeleteWorkloadRequest]) (*connect.Response[v1.DeleteWorkloadResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.DeleteWorkload is not implemented"))
+func (UnimplementedWorkloadServiceHandler) Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("workload.v1.WorkloadService.Delete is not implemented"))
 }
