@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "buf-gen": "buf generate"
+  }
+}
