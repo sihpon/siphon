@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/rs/cors"
 	"github.com/siphon/siphon/generated/system/v1/systemv1connect"
 	"github.com/siphon/siphon/internal/model"
 	"github.com/siphon/siphon/internal/service/system"
@@ -29,9 +30,10 @@ func Start() error {
 	mux := http.NewServeMux()
 	mux.Handle(systemv1connect.NewSystemServiceHandler(&system.SystemService{}))
 	mux.Handle(workload.NewWorkloadServiceHandler(workload.NewWorkloadService(db)))
+	corsHandler := cors.AllowAll().Handler(h2c.NewHandler(mux, &http2.Server{}))
 	http.ListenAndServe(
 		"localhost:8080",
-		h2c.NewHandler(mux, &http2.Server{}),
+		corsHandler,
 	)
 
 	return nil
