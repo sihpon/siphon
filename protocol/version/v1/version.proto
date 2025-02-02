@@ -15,7 +15,7 @@ service VersionService {
 message ListRequest {}
 
 message ListResponse {
-  repeated Versions versions = 1;
+  repeated Version versions = 1;
 }
 
 message GetRequest {

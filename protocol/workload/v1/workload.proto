@@ -27,7 +27,10 @@ message GetResponse {
 }
 
 message CreateRequest {
-  Workload workload = 1;
+  string version_id = 1;
+  string name = 2;
+  string description = 3;
+  repeated Artifact artifacts = 4;
 }
 
 message CreateResponse {
@@ -53,4 +56,21 @@ message Workload {
   string name = 2;
   string description = 3;
   string version = 4;
+}
+
+message Artifact {
+  string name = 1;
+  ArtifactType type = 2;
+  string tag = 3;
+}
+
+enum ArtifactType {
+  // UNKNOWN is the default value and should not be used.
+  ARTIFACT_TYPE_UNSPECIFIED = 0;
+
+  // CONTAINER_IMAGE represents a container image artifact.
+  ARTIFACT_TYPE_CONTAINER_IMAGE = 1;
+
+  // ASSET represents a generic asset artifact.
+  ARTIFACT_TYPE_ASSET = 2;
 }

@@ -2,6 +2,7 @@ package workload
 
 import (
 	"context"
+	"fmt"
 
 	workloadv1 "github.com/siphon/siphon/generated/workload/v1"
 	"github.com/siphon/siphon/internal/model"
@@ -58,11 +59,12 @@ func (s *WorkloadService) Get(ctx context.Context, request *workloadv1.GetReques
 }
 
 func (s *WorkloadService) Create(ctx context.Context, request *workloadv1.CreateRequest) (*workloadv1.CreateResponse, error) {
+	id := fmt.Sprintf("%s-%s", request.VersionId, request.Name)
 	workload := &model.Workload{
-		ID:          request.Workload.Id,
-		Name:        request.Workload.Name,
-		Description: request.Workload.Description,
-		Version:     request.Workload.Version,
+		ID:          id,
+		Name:        request.Name,
+		Description: request.Description,
+		Version:     request.VersionId,
 	}
 
 	if err := s.db.Create(&workload).Error; err != nil {
