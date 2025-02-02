@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package version.v1;
+
+option go_package = "version/v1;versionv1";
+
+service VersionService {
+  rpc List(ListRequest) returns (ListResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+}
+
+message ListRequest {}
+
+message ListResponse {
+  repeated Versions versions = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Version version = 1;
+}
+
+message CreateRequest {
+  Version version = 1;
+}
+
+message CreateResponse {
+  Version version = 1;
+}
+
+message UpdateRequest {
+  Version version = 1;
+}
+
+message UpdateResponse {
+  Version version = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message DeleteResponse {}
+
+message Version {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string version = 4;
+}

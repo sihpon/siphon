@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- siphon_v1_siphon.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

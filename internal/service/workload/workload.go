@@ -24,7 +24,7 @@ func (s *WorkloadService) List(context.Context, *workloadv1.ListRequest) (*workl
 		return nil, err
 	}
 
-	response := []*workloadv1.Workload{}
+	response := make([]*workloadv1.Workload, len(workloads))
 	for _, workload := range workloads {
 		response = append(response, &workloadv1.Workload{
 			Id:          workload.ID,
