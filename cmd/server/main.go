@@ -1,7 +1,8 @@
-package main
+package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/siphon/siphon/generated/system/v1/systemv1connect"
@@ -14,16 +15,17 @@ import (
 	"gorm.io/gorm"
 )
 
-func main() {
+func Start() error {
 	db, err := SetupDatabase()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	err = AutoMigrate(db)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
+	log.Println("Starting server on localhost:8080")
 	mux := http.NewServeMux()
 	mux.Handle(systemv1connect.NewSystemServiceHandler(&system.SystemService{}))
 	mux.Handle(workload.NewWorkloadServiceHandler(workload.NewWorkloadService(db)))
@@ -31,6 +33,8 @@ func main() {
 		"localhost:8080",
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
+
+	return nil
 }
 
 func SetupDatabase() (db *gorm.DB, err error) {
