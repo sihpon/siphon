@@ -7,6 +7,7 @@ import Header from './components/Header.vue';
         <Header />
         <main class="flex-grow p-4">
             <section class="container mx-auto mb-4">
+                <h1 class="text-2xl my-2">🤖 Workloads</h1>
                 <div class="breadcrumbs text-sm mb-4">
                     <ul>
                         <li>
@@ -17,7 +18,7 @@ import Header from './components/Header.vue';
                                         d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z">
                                     </path>
                                 </svg>
-                                Home
+                                HOME
                             </a>
                         </li>
                         <li>
@@ -28,7 +29,7 @@ import Header from './components/Header.vue';
                                         d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z">
                                     </path>
                                 </svg>
-                                Documents
+                                WORKLOADS
                             </a>
                         </li>
                         <li>
@@ -39,7 +40,7 @@ import Header from './components/Header.vue';
                                         d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                     </path>
                                 </svg>
-                                Add Document
+                                List
                             </span>
                         </li>
                     </ul>
@@ -47,34 +48,38 @@ import Header from './components/Header.vue';
                 <div class="overflow-x-auto">
                     <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                         <table class="table">
-                            <!-- head -->
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Job</th>
-                                    <th>Favorite Color</th>
+                                    <th>VERSION</th>
+                                    <th>NAME</th>
+                                    <th>SERVER_VERSION</th>
+                                    <th>MASTER_VERSION</th>
+                                    <th>ASSET_VERSION</th>
+                                    <th>DETAIL</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- row 1 -->
                                 <tr>
                                     <th>1</th>
                                     <td>Cy Ganderton</td>
                                     <td>Quality Control Specialist</td>
+                                    <td>Quality Control Specialist</td>
+                                    <td>Quality Control Specialist</td>
                                     <td>Blue</td>
                                 </tr>
-                                <!-- row 2 -->
                                 <tr>
                                     <th>2</th>
                                     <td>Hart Hagerty</td>
                                     <td>Desktop Support Technician</td>
+                                    <td>Desktop Support Technician</td>
+                                    <td>Desktop Support Technician</td>
                                     <td>Purple</td>
                                 </tr>
-                                <!-- row 3 -->
                                 <tr>
                                     <th>3</th>
                                     <td>Brice Swyre</td>
+                                    <td>Tax Accountant</td>
+                                    <td>Tax Accountant</td>
                                     <td>Tax Accountant</td>
                                     <td>Red</td>
                                 </tr>
