@@ -1,194 +1,111 @@
 <script setup lang="ts">
+import Header from './components/Header.vue';
 </script>
 
 <template>
-    <div class="bg-base-100/40 sticky top-0 z-30 flex h-16 w-full justify-center glass">
-        <div class="navbar-start">
-            <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h7" />
-                    </svg>
+    <div class="flex flex-col min-h-screen">
+        <Header />
+        <main class="flex-grow p-4">
+            <section class="container mx-auto mb-4">
+                <div class="breadcrumbs text-sm mb-4">
+                    <ul>
+                        <li>
+                            <a>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    class="h-4 w-4 stroke-current">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z">
+                                    </path>
+                                </svg>
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    class="h-4 w-4 stroke-current">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z">
+                                    </path>
+                                </svg>
+                                Documents
+                            </a>
+                        </li>
+                        <li>
+                            <span class="inline-flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    class="h-4 w-4 stroke-current">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                Add Document
+                            </span>
+                        </li>
+                    </ul>
                 </div>
-                <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                    <li><a>Homepage</a></li>
-                    <li><a>Portfolio</a></li>
-                    <li><a>About</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="navbar-center">
-            <a class="btn btn-ghost text-xl">Siphon</a>
-        </div>
-        <div class="navbar-end">
-            <button class="btn btn-ghost btn-circle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </div>
-    </div>
-    <div class="inline-grid *:[grid-area:1/1]">
-        <div class="status status-error animate-ping"></div>
-        <div class="status status-error"></div>
-    </div> Server is down
-    <ul class="list bg-base-100 rounded-box shadow-md">
+                <div class="overflow-x-auto">
+                    <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+                        <table class="table">
+                            <!-- head -->
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Job</th>
+                                    <th>Favorite Color</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- row 1 -->
+                                <tr>
+                                    <th>1</th>
+                                    <td>Cy Ganderton</td>
+                                    <td>Quality Control Specialist</td>
+                                    <td>Blue</td>
+                                </tr>
+                                <!-- row 2 -->
+                                <tr>
+                                    <th>2</th>
+                                    <td>Hart Hagerty</td>
+                                    <td>Desktop Support Technician</td>
+                                    <td>Purple</td>
+                                </tr>
+                                <!-- row 3 -->
+                                <tr>
+                                    <th>3</th>
+                                    <td>Brice Swyre</td>
+                                    <td>Tax Accountant</td>
+                                    <td>Red</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
 
-        <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most played songs this week</li>
-
-        <li class="list-row">
-            <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp" /></div>
-            <div>
-                <div>Dio Lupa</div>
-                <div class="text-xs uppercase font-semibold opacity-60">Remaining Reason</div>
-            </div>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
-                        stroke="currentColor">
-                        <path d="M6 3L20 12 6 21 6 3z"></path>
-                    </g>
-                </svg>
-            </button>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
-                        stroke="currentColor">
-                        <path
-                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-                        </path>
-                    </g>
-                </svg>
-            </button>
-        </li>
-
-        <li class="list-row">
-            <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/4@94.webp" /></div>
-            <div>
-                <div>Ellie Beilish</div>
-                <div class="text-xs uppercase font-semibold opacity-60">Bears of a fever</div>
-            </div>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
-                        stroke="currentColor">
-                        <path d="M6 3L20 12 6 21 6 3z"></path>
-                    </g>
-                </svg>
-            </button>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
-                        stroke="currentColor">
-                        <path
-                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-                        </path>
-                    </g>
-                </svg>
-            </button>
-        </li>
-
-        <li class="list-row">
-            <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/3@94.webp" /></div>
-            <div>
-                <div>Sabrino Gardener</div>
-                <div class="text-xs uppercase font-semibold opacity-60">Cappuccino</div>
-            </div>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
-                        stroke="currentColor">
-                        <path d="M6 3L20 12 6 21 6 3z"></path>
-                    </g>
-                </svg>
-            </button>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
-                        stroke="currentColor">
-                        <path
-                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-                        </path>
-                    </g>
-                </svg>
-            </button>
-        </li>
-
-    </ul>
-    <div class="overflow-x-auto">
-        <table class="table">
-            <!-- head -->
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Job</th>
-                    <th>Favorite Color</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- row 1 -->
-                <tr class="hover:bg-base-300">
-                    <th>1</th>
-                    <td>Cy Ganderton</td>
-                    <td>Quality Control Specialist</td>
-                    <td>Blue</td>
-                </tr>
-                <!-- row 2 -->
-                <tr class="hover:bg-base-300">
-                    <th>2</th>
-                    <td>Hart Hagerty</td>
-                    <td>Desktop Support Technician</td>
-                    <td>Purple</td>
-                </tr>
-                <!-- row 3 -->
-                <tr class="hover:bg-base-300">
-                    <th>3</th>
-                    <td>Brice Swyre</td>
-                    <td>Tax Accountant</td>
-                    <td>Red</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="overflow-x-auto">
-        <table class="table table-zebra">
-            <!-- head -->
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Job</th>
-                    <th>Favorite Color</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- row 1 -->
-                <tr>
-                    <th>1</th>
-                    <td>Cy Ganderton</td>
-                    <td>Quality Control Specialist</td>
-                    <td>Blue</td>
-                </tr>
-                <!-- row 2 -->
-                <tr>
-                    <th>2</th>
-                    <td>Hart Hagerty</td>
-                    <td>Desktop Support Technician</td>
-                    <td>Purple</td>
-                </tr>
-                <!-- row 3 -->
-                <tr>
-                    <th>3</th>
-                    <td>Brice Swyre</td>
-                    <td>Tax Accountant</td>
-                    <td>Red</td>
-                </tr>
-            </tbody>
-        </table>
+        <footer class="footer sm:footer-horizontal bg-neutral text-neutral-content p-10">
+            <nav>
+                <h6 class="footer-title">Services</h6>
+                <a class="link link-hover">Branding</a>
+                <a class="link link-hover">Design</a>
+                <a class="link link-hover">Marketing</a>
+                <a class="link link-hover">Advertisement</a>
+            </nav>
+            <nav>
+                <h6 class="footer-title">Company</h6>
+                <a class="link link-hover">About us</a>
+                <a class="link link-hover">Contact</a>
+                <a class="link link-hover">Jobs</a>
+                <a class="link link-hover">Press kit</a>
+            </nav>
+            <nav>
+                <h6 class="footer-title">Legal</h6>
+                <a class="link link-hover">Terms of use</a>
+                <a class="link link-hover">Privacy policy</a>
+                <a class="link link-hover">Cookie policy</a>
+            </nav>
+        </footer>
     </div>
 </template>
