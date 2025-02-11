@@ -5,14 +5,23 @@ import { CreateRequestSchema } from '../../generated/workload/v1/workload_pb.ts'
 import { Client } from '../../shared/client.ts'
 import { validationRules } from '../../shared/validationRules.ts'
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 async function onSend() {
     const ok = await v$.value.$validate()
     if (!ok) {
         return
     }
 
-    const response = await new Client().Workload().Create(request.value)
+    try {
+        await new Client().Workload().Create(request.value)
+    } catch (e) {
+        console.error(e)
+        return
+    }
+
+    router.push('/workloads')
 }
 
 const request = ref(create(CreateRequestSchema))

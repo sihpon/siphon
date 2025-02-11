@@ -6,6 +6,7 @@ import (
 
 	workloadv1 "github.com/siphon/siphon/generated/workload/v1"
 	"github.com/siphon/siphon/internal/model"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 )
 
@@ -25,13 +26,15 @@ func (s *WorkloadService) List(context.Context, *workloadv1.ListRequest) (*workl
 		return nil, err
 	}
 
-	response := make([]*workloadv1.Workload, len(workloads))
+	response := make([]*workloadv1.Workload, 0, len(workloads))
 	for _, workload := range workloads {
 		response = append(response, &workloadv1.Workload{
 			Id:          workload.ID,
 			Name:        workload.Name,
 			Description: workload.Description,
 			Version:     workload.Version,
+			CreatedAt:   timestamppb.New(workload.CreatedAt),
+			UpdatedAt:   timestamppb.New(workload.UpdatedAt),
 		})
 	}
 
@@ -42,7 +45,7 @@ func (s *WorkloadService) List(context.Context, *workloadv1.ListRequest) (*workl
 
 func (s *WorkloadService) Get(ctx context.Context, request *workloadv1.GetRequest) (*workloadv1.GetResponse, error) {
 	workload := &model.Workload{}
-	if err := s.db.First(&workload, request.Id).Error; err != nil {
+	if err := s.db.First(&workload, "id = ?", request.Id).Error; err != nil {
 		return nil, err
 	}
 
@@ -51,6 +54,8 @@ func (s *WorkloadService) Get(ctx context.Context, request *workloadv1.GetReques
 		Name:        workload.Name,
 		Description: workload.Description,
 		Version:     workload.Version,
+		CreatedAt:   timestamppb.New(workload.CreatedAt),
+		UpdatedAt:   timestamppb.New(workload.UpdatedAt),
 	}
 
 	return &workloadv1.GetResponse{
@@ -103,12 +108,7 @@ func (s *WorkloadService) Update(ctx context.Context, request *workloadv1.Update
 }
 
 func (s *WorkloadService) Delete(ctx context.Context, request *workloadv1.DeleteRequest) (*workloadv1.DeleteResponse, error) {
-	workload := &model.Workload{}
-	if err := s.db.First(&workload, request.Id).Error; err != nil {
-		return nil, err
-	}
-
-	if err := s.db.Delete(&workload).Error; err != nil {
+	if err := s.db.Delete(&model.Workload{}, "id = ?", request.Id).Error; err != nil {
 		return nil, err
 	}
 

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package workload.v1;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "workload/v1;workloadv1";
 
 service WorkloadService {
@@ -56,6 +58,8 @@ message Workload {
   string name = 2;
   string description = 3;
   string version = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
 }
 
 message Artifact {

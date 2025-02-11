@@ -11,3 +11,7 @@ plugins:
   - local: protoc-gen-connect-go
     out: generated
     opt: paths=source_relative
+  - local: protoc-gen-es
+    out: viewer/src/generated
+    include_imports: true
+    opt: target=ts

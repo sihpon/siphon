@@ -37,7 +37,7 @@ export class Workload {
     return this.client.create(request);
   }
 
-  async Delete() {
-    return this.client.delete({});
+  async Delete(id: string) {
+    return this.client.delete({ id: id });
   }
 }
