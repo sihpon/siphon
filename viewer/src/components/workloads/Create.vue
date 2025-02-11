@@ -1,24 +1,46 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-const message = ref('Hello, Vite!')
+import { useVuelidate } from '@vuelidate/core'
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { WorkloadService, CreateRequest } from '../../generated/workload/v1/workload_pb.ts';
-import { onMounted } from 'vue'
+import { validationRules } from '../../shared/validationRules.ts'
+import { ref, onMounted } from 'vue'
 
 async function create() {
+    const ok = await v$.value.$validate()
+    if (!ok) {
+        return
+    }
+
     const transport = createConnectTransport({
         baseUrl: "http://localhost:8080",
     });
     const client = createClient(WorkloadService, transport);
-    const response = await client.create(request)
+    const response = await client.create({
+        versionId: state.value.version_id,
+        name: state.value.name,
+        description: state.value.description,
+    })
     console.log(response)
 }
 
-const request: CreateRequest = {
-  versionId : "v2.1.0",
-  name : "test",
-  description : "test",
+const state = ref({
+  version_id: '',
+  name: '',
+  description: '',
+  priority: 0,
+})
+
+const rule = {
+  version_id: validationRules.workload_version_id,
+  name: validationRules.workload_name,
+  priority: validationRules.workload_priority,
+}
+
+const v$ = useVuelidate(rule, state)
+
+const validateField = (field) => {
+  v$.value[field].$touch();
 };
 </script>
 
@@ -61,26 +83,34 @@ const request: CreateRequest = {
     </div>
     <div class="card bg-base-100 shadow-sm">
         <div class="card-body">
-            <p>Message is: {{ message }}</p>
-            <input v-model="message" placeholder="edit me" />
             <label class="select">
-                <span class="label">バージョン</span>
-                <select>
+                <span class="label">* バージョン</span>
+                <select v-model="state.version_id">
                     <option>dev</option>
                     <option>v2.1.0</option>
                     <option>v2.2.0</option>
                 </select>
             </label>
             <label class="floating-label">
-                <span>サーバー名</span>
-                <input type="text" placeholder="Your name" class="input" />
+                <span>* サーバー名</span>
+                <input
+                    v-model.trim="state.name"
+                    @input="validateField('name')"
+                    type="text"
+                    placeholder="server name"
+                    class="input"
+                    :class="{ 'input-error': v$.name.$error }"
+                    />
+                <div v-for="error of v$.name.$errors">
+                  <span class="text-error">{{ error.$message }}</span>
+                </div>
             </label>
             <label class="floating-label">
                 <span>サーバー説明文</span>
-                <input type="text" placeholder="Your name" class="input" />
+                <input v-model="state.description" type="text" placeholder="Your name" class="input" />
             </label>
             <label class="floating-label">
-                <span>追従サーバーブランチ</span>
+                <span>* 追従サーバーブランチ</span>
                 <input type="text" placeholder="Your name" class="input" />
             </label>
             <div class="divider"></div>
@@ -90,7 +120,17 @@ const request: CreateRequest = {
             </label>
             <label class="floating-label">
                 <span>表示優先度</span>
-                <input type="text" placeholder="Your name" class="input" />
+                <input
+                    v-model.number="state.priority"
+                    @input="validateField('priority')"
+                    type="number"
+                    value="0"
+                    class="input"
+                    :class="{ 'input-error': v$.priority.$error }"
+                    />
+                <div v-for="error of v$.priority.$errors">
+                    <span class="text-error">{{ error.$message }}</span>
+                </div>
             </label>
             <div class="divider"></div>
             <button class="btn btn-primary" @click="create">作成する</button>

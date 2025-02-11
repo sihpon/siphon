@@ -8,4 +8,6 @@ plugins:
     # Also generate any imported dependencies
     include_imports: true
     # Add more plugin options here
-    opt: target=ts
+    opt:
+      - target=ts
+      - json_types=true

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const message = ref('Hello, Vite!')
 import { createClient } from "@connectrpc/connect";
+import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb.ts";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { WorkloadService } from '../../generated/workload/v1/workload_pb.ts';
+import { WorkloadService, ListResponseSchema, ListResponseJson } from '../../generated/workload/v1/workload_pb.ts';
 import { ref, onMounted } from 'vue'
 
 const workloads = ref([])
@@ -10,10 +10,10 @@ const workloads = ref([])
 onMounted(async () => {
   const transport = createConnectTransport({
       baseUrl: "http://localhost:8080",
+      useBinaryFormat: true,
   });
   const client = createClient(WorkloadService, transport);
   const response = await client.list({})
-  console.log(response)
   workloads.value = response.workloads
 })
 
@@ -89,10 +89,10 @@ onMounted(async () => {
                         <span class="font-bold">rc/v2.1.0</span>
                     </td>
                     <td>
-                        <span>2025/02/15 19:00:00</span>
+                        <span>{{ Date(Number(BigInt(workload.createdAt.seconds))) }}</span>
                     </td>
                     <td>
-                        <span>2025/02/15 19:00:00</span>
+                        <span>{{ Date(Number(BigInt(workload.updatedAt.seconds))) }}</span>
                     </td>
                     <td>
                         <span>atsuya.siphon@example.com</span>
