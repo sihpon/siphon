@@ -1,24 +1,13 @@
 <script setup lang="ts">
-const message = ref('Hello, Vite!')
-import { createClient } from "@connectrpc/connect";
-import { createConnectTransport } from "@connectrpc/connect-web";
-import { WorkloadService } from '../../generated/workload/v1/workload_pb.ts';
 import { ref, onMounted } from 'vue'
 import { useRoute } from "vue-router";
+import { Client } from '../../shared/client.ts'
 
 const route = useRoute();
-const workload = ref({})
-
+const response = ref({});
 onMounted(async () => {
-  const transport = createConnectTransport({
-      baseUrl: "http://localhost:8080",
-  });
-  const client = createClient(WorkloadService, transport);
-  const response = await client.get({
-    id: route.params.id,
-  })
-  console.log(response)
-  workload.value = response.workload
+  response.value = await new Client().Workload().Get(route.params.id)
+  console.log(response.value.workload)
 })
 
 </script>
@@ -74,7 +63,6 @@ onMounted(async () => {
                 </tr>
             </thead>
             <tbody>
-                <!-- row 1 -->
                 <tr>
                     <td>
                         <div class="inline-grid *:[grid-area:1/1]">
@@ -83,8 +71,8 @@ onMounted(async () => {
                         </div>
                     </td>
                     <td>
-                        <span class="font-bold text-lg">{{ workload.version }} - {{ workload.name }}</span><br>
-                        <span class="italic text-sm">{{ workload.description }}</span>
+                        <span class="font-bold text-lg">{{ response.workload?.version }} - {{ response.workload?.name }}</span><br>
+                        <span class="italic text-sm">{{ response.workload?.description }}</span>
                     </td>
                     <td>
                         <span class="font-bold">rc/v2.1.0</span>
@@ -102,7 +90,7 @@ onMounted(async () => {
                         <span>atsuya.siphon@example.com</span>
                     </td>
                     <td>
-                    <router-link :to="`/workloads/${workload.id}`">
+                    <router-link :to="`/workloads/${response.workload?.id}`">
                       <button class="btn btn-neutral">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                               stroke="currentColor" class="size-[1.2em]">

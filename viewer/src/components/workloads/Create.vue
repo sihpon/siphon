@@ -1,43 +1,29 @@
 <script setup lang="ts">
+import { create } from "@bufbuild/protobuf";
 import { useVuelidate } from '@vuelidate/core'
-import { createClient } from "@connectrpc/connect";
-import { createConnectTransport } from "@connectrpc/connect-web";
-import { WorkloadService, CreateRequest } from '../../generated/workload/v1/workload_pb.ts';
+import { CreateRequestSchema } from '../../generated/workload/v1/workload_pb.ts';
+import { Client } from '../../shared/client.ts'
 import { validationRules } from '../../shared/validationRules.ts'
 import { ref, onMounted } from 'vue'
 
-async function create() {
+async function onSend() {
     const ok = await v$.value.$validate()
     if (!ok) {
         return
     }
 
-    const transport = createConnectTransport({
-        baseUrl: "http://localhost:8080",
-    });
-    const client = createClient(WorkloadService, transport);
-    const response = await client.create({
-        versionId: state.value.version_id,
-        name: state.value.name,
-        description: state.value.description,
-    })
-    console.log(response)
+    const response = await new Client().Workload().Create(request.value)
 }
 
-const state = ref({
-  version_id: '',
-  name: '',
-  description: '',
-  priority: 0,
-})
+const request = ref(create(CreateRequestSchema))
 
 const rule = {
-  version_id: validationRules.workload_version_id,
+  versionId: validationRules.workload_version_id,
   name: validationRules.workload_name,
   priority: validationRules.workload_priority,
 }
 
-const v$ = useVuelidate(rule, state)
+const v$ = useVuelidate(rule, request)
 
 const validateField = (field) => {
   v$.value[field].$touch();
@@ -85,7 +71,7 @@ const validateField = (field) => {
         <div class="card-body">
             <label class="select">
                 <span class="label">* バージョン</span>
-                <select v-model="state.version_id">
+                <select v-model="request.versionId">
                     <option>dev</option>
                     <option>v2.1.0</option>
                     <option>v2.2.0</option>
@@ -94,7 +80,7 @@ const validateField = (field) => {
             <label class="floating-label">
                 <span>* サーバー名</span>
                 <input
-                    v-model.trim="state.name"
+                    v-model.trim="request.name"
                     @input="validateField('name')"
                     type="text"
                     placeholder="server name"
@@ -107,7 +93,7 @@ const validateField = (field) => {
             </label>
             <label class="floating-label">
                 <span>サーバー説明文</span>
-                <input v-model="state.description" type="text" placeholder="Your name" class="input" />
+                <input v-model="request.description" type="text" placeholder="Your name" class="input" />
             </label>
             <label class="floating-label">
                 <span>* 追従サーバーブランチ</span>
@@ -121,7 +107,7 @@ const validateField = (field) => {
             <label class="floating-label">
                 <span>表示優先度</span>
                 <input
-                    v-model.number="state.priority"
+                    v-model.number="request.priority"
                     @input="validateField('priority')"
                     type="number"
                     value="0"
@@ -133,7 +119,7 @@ const validateField = (field) => {
                 </div>
             </label>
             <div class="divider"></div>
-            <button class="btn btn-primary" @click="create">作成する</button>
+            <button class="btn btn-primary" @click="onSend">作成する</button>
         </div>
     </div>
 </template>

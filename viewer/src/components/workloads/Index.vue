@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import { createClient } from "@connectrpc/connect";
 import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb.ts";
-import { createConnectTransport } from "@connectrpc/connect-web";
-import { WorkloadService, ListResponseSchema, ListResponseJson } from '../../generated/workload/v1/workload_pb.ts';
 import { ref, onMounted } from 'vue'
+import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { Client } from '../../shared/client.ts'
 
-const workloads = ref([])
-
+const response = ref({})
 onMounted(async () => {
-  const transport = createConnectTransport({
-      baseUrl: "http://localhost:8080",
-      useBinaryFormat: true,
-  });
-  const client = createClient(WorkloadService, transport);
-  const response = await client.list({})
-  workloads.value = response.workloads
+  response.value = await new Client().Workload().List()
 })
 
 </script>
@@ -71,7 +63,7 @@ onMounted(async () => {
             </thead>
             <tbody>
                 <!-- row 1 -->
-                <tr v-for="(workload, index) in workloads">
+                <tr v-for="(workload, index) in response.workloads">
                     <td>
                         <div class="inline-grid *:[grid-area:1/1]">
                             <div class="status status-error animate-ping"></div>
@@ -89,10 +81,10 @@ onMounted(async () => {
                         <span class="font-bold">rc/v2.1.0</span>
                     </td>
                     <td>
-                        <span>{{ Date(Number(BigInt(workload.createdAt.seconds))) }}</span>
+                        <span>{{ timestampDate(workload.createdAt) }}</span>
                     </td>
                     <td>
-                        <span>{{ Date(Number(BigInt(workload.updatedAt.seconds))) }}</span>
+                        <span>{{ timestampDate(workload.updatedAt) }}</span>
                     </td>
                     <td>
                         <span>atsuya.siphon@example.com</span>
