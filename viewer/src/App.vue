@@ -2,7 +2,6 @@
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Sidebar from './components/Sidebar.vue';
-import WorkloadIndex from './components/workload/WorkloadIndex.vue';
 </script>
 
 <template>
@@ -12,7 +11,7 @@ import WorkloadIndex from './components/workload/WorkloadIndex.vue';
   <div class="flex flex-1">
     <Sidebar />
     <div class="flex-1 p-6">
-    <WorkloadIndex />
+    <RouterView />
     </div>
   </div>
 
