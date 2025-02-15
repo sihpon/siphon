@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 interface HeaderProps {
   title: string
 }
@@ -11,11 +13,11 @@ const Header = ({ title }: HeaderProps) => {
         </button>
       </div>
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">{title}</a>
+        <Link href="/workloads" className="btn btn-ghost text-xl">{title}</Link>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          <li><a>Workloads</a></li>
+          <li><Link href="/workloads">Workloads</Link></li>
           <li>
             <details>
               <summary>Parent</summary>

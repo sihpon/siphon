@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
-import Breadcrumb from "@/components/layout/Breadcrumb";
+import { BreadCrumb } from "@/components/layout/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,18 +20,17 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Siphon</title>
       </head>
-      <body className="stripe">
-        <div data-theme="light" className="flex flex-col h-screen">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <body>
+        <div data-theme="light" className="flex flex-col h-screen stripe">
           <Header title="Siphon"></Header>
           <div className="flex flex-1">
             <Sidebar></Sidebar>
             <div className="flex-1 p-6">
               <div>
                 <h1 className="text-5xl font-extrabold mb-4">🏗️ Workloads</h1>
-                <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-                  <Breadcrumb />
-                  {children}
-                </div>
+                <BreadCrumb />
+                {children}
               </div>
             </div>
           </div>
