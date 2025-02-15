@@ -7,10 +7,11 @@ import (
 	"os/signal"
 	"syscall"
 
+	"golang.org/x/sync/errgroup"
+
 	"github.com/siphon/siphon/cmd/config"
 	"github.com/siphon/siphon/cmd/server"
 	siphonoperator "github.com/siphon/siphon/cmd/siphon-operator"
-	"golang.org/x/sync/errgroup"
 )
 
 func main() {

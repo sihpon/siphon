@@ -3,6 +3,7 @@
 # It should be run by config/default
 resources:
 - bases/siphon.my.domain_siphons.yaml
+- bases/siphon.my.domain_siphonconfigs.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:

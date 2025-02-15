@@ -1,0 +1,9 @@
+apiVersion: siphon.my.domain/v1
+kind: SiphonConfig
+metadata:
+  labels:
+    app.kubernetes.io/name: siphon
+    app.kubernetes.io/managed-by: kustomize
+  name: siphonconfig-sample
+spec:
+  # TODO(user): Add fields here
