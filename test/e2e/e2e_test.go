@@ -31,16 +31,16 @@ import (
 )
 
 // namespace where the project is deployed in
-const namespace = "siphon-system"
+const namespace = "siphonv2-system"
 
 // serviceAccountName created for the project
-const serviceAccountName = "siphon-controller-manager"
+const serviceAccountName = "siphonv2-controller-manager"
 
 // metricsServiceName is the name of the metrics service of the project
-const metricsServiceName = "siphon-controller-manager-metrics-service"
+const metricsServiceName = "siphonv2-controller-manager-metrics-service"
 
 // metricsRoleBindingName is the name of the RBAC that will be created to allow get the metrics data
-const metricsRoleBindingName = "siphon-metrics-binding"
+const metricsRoleBindingName = "siphonv2-metrics-binding"
 
 var _ = Describe("Manager", Ordered, func() {
 	var controllerPodName string
@@ -173,7 +173,7 @@ var _ = Describe("Manager", Ordered, func() {
 		It("should ensure the metrics endpoint is serving metrics", func() {
 			By("creating a ClusterRoleBinding for the service account to allow access to metrics")
 			cmd := exec.Command("kubectl", "create", "clusterrolebinding", metricsRoleBindingName,
-				"--clusterrole=siphon-metrics-reader",
+				"--clusterrole=siphonv2-metrics-reader",
 				fmt.Sprintf("--serviceaccount=%s:%s", namespace, serviceAccountName),
 			)
 			_, err := utils.Run(cmd)

@@ -7,6 +7,8 @@ import (
 	"connectrpc.com/connect"
 	proto "github.com/siphon/siphon/generated/workload/v1"
 	"github.com/siphon/siphon/generated/workload/v1/workloadv1connect"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type Workloader interface {
@@ -21,6 +23,8 @@ var _ workloadv1connect.WorkloadServiceHandler = &ZZWorkloadService{}
 
 type ZZWorkloadService struct {
 	Workloader
+	Cient  client.Client
+	Scheme *runtime.Scheme
 }
 
 func NewWorkloadServiceHandler(handlers Workloader) (string, http.Handler) {

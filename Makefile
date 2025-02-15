@@ -1,17 +1,3 @@
-.PHONY: gen
-gen:
-	buf lint
-	buf format -w
-	buf generate
-
-.PHONY: up
-up:
-	docker-compose -f ./docker/docker-compose.local.yaml up -d
-
-.PHONY: down
-down:
-	docker-compose -f ./docker/docker-compose.local.yaml down
-
 # Image URL to use all building/pushing image targets
 IMG ?= controller:latest
 
@@ -136,10 +122,10 @@ PLATFORMS ?= linux/arm64,linux/amd64,linux/s390x,linux/ppc64le
 docker-buildx: ## Build and push docker image for the manager for cross-platform support
 	# copy existing Dockerfile and insert --platform=${BUILDPLATFORM} into Dockerfile.cross, and preserve the original Dockerfile
 	sed -e '1 s/\(^FROM\)/FROM --platform=\$$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=\$$\{BUILDPLATFORM\}/' Dockerfile > Dockerfile.cross
-	- $(CONTAINER_TOOL) buildx create --name condenser-builder
-	$(CONTAINER_TOOL) buildx use condenser-builder
+	- $(CONTAINER_TOOL) buildx create --name siphonv2-builder
+	$(CONTAINER_TOOL) buildx use siphonv2-builder
 	- $(CONTAINER_TOOL) buildx build --push --platform=$(PLATFORMS) --tag ${IMG} -f Dockerfile.cross .
-	- $(CONTAINER_TOOL) buildx rm condenser-builder
+	- $(CONTAINER_TOOL) buildx rm siphonv2-builder
 	rm Dockerfile.cross
 
 .PHONY: build-installer
@@ -237,4 +223,3 @@ mv $(1) $(1)-$(3) ;\
 } ;\
 ln -sf $(1)-$(3) $(1)
 endef
-

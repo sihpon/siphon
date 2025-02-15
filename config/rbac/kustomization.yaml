@@ -22,9 +22,6 @@ resources:
 # default, aiding admins in cluster management. Those roles are
 # not used by the {{ .ProjectName }} itself. You can comment the following lines
 # if you do not want those helpers be installed with your Project.
-- siphonconfig_admin_role.yaml
-- siphonconfig_editor_role.yaml
-- siphonconfig_viewer_role.yaml
 - siphon_admin_role.yaml
 - siphon_editor_role.yaml
 - siphon_viewer_role.yaml

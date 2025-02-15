@@ -2,8 +2,7 @@
 # since it depends on service name and namespace that are out of this kustomize package.
 # It should be run by config/default
 resources:
-- bases/siphon.my.domain_siphons.yaml
-- bases/siphon.my.domain_siphonconfigs.yaml
+- bases/my.domain_siphons.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:

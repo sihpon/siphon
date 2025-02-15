@@ -5,7 +5,7 @@
 domain: my.domain
 layout:
 - go.kubebuilder.io/v4
-projectName: siphon
+projectName: siphonv2
 repo: github.com/siphon/siphon
 resources:
 - api:
@@ -13,17 +13,7 @@ resources:
     namespaced: true
   controller: true
   domain: my.domain
-  group: siphon
   kind: Siphon
-  path: github.com/siphon/siphon/api/v1
-  version: v1
-- api:
-    crdVersion: v1
-    namespaced: true
-  controller: true
-  domain: my.domain
-  group: siphon
-  kind: SiphonConfig
   path: github.com/siphon/siphon/api/v1
   version: v1
 version: "3"

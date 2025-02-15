@@ -28,28 +28,10 @@ type SiphonSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	Namespace   string           `json:"namespace"`
-	Deployments []DeploymentInfo `json:"deployments,omitempty"`
-}
-
-func (s *SiphonSpec) UpdateDeploymentInfo(info DeploymentInfo) bool {
-	for _, deployment := range s.Deployments {
-		if deployment.Name == info.Name {
-			deployment = info
-			return true
-		}
-	}
-
-	s.Deployments = append(s.Deployments, info)
-
-	return true
-}
-
-type DeploymentInfo struct {
-	Name      string `json:"name"`
-	Namespace string `json:"namespace"`
-	Replicas  int32  `json:"replicas"`
-	Status    string `json:"status"`
+	// Foo is an example field of Siphon. Edit siphon_types.go to remove/update
+	Foo      string            `json:"foo,omitempty"`
+	Versions map[string]string `json:"versions,omitempty"`
+	Labels   map[string]string `json:"labels,omitempty"`
 }
 
 // SiphonStatus defines the observed state of Siphon.

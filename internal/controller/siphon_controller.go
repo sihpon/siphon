@@ -19,10 +19,12 @@ package controller
 import (
 	"context"
 
-	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
+
+	mydomainv1 "github.com/siphon/siphon/api/v1"
 )
 
 // SiphonReconciler reconciles a Siphon object
@@ -31,9 +33,9 @@ type SiphonReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=siphon.my.domain,resources=siphons,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=siphon.my.domain,resources=siphons/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=siphon.my.domain,resources=siphons/finalizers,verbs=update
+// +kubebuilder:rbac:groups=my.domain,resources=siphons,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=my.domain,resources=siphons/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=my.domain,resources=siphons/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -45,22 +47,17 @@ type SiphonReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.20.0/pkg/reconcile
 func (r *SiphonReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	return r.Reconciler(ctx, req)
+	_ = log.FromContext(ctx)
+
+	// TODO(user): your logic here
+
+	return ctrl.Result{}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *SiphonReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	if err := mgr.GetFieldIndexer().IndexField(context.TODO(), &appsv1.Deployment{}, "metadata.annotations[siphon-managed]", func(rawObj client.Object) []string {
-		deployment := rawObj.(*appsv1.Deployment)
-		if val, ok := deployment.Annotations["siphon-managed"]; ok && val == "true" {
-			return []string{"true"}
-		}
-		return []string{}
-	}); err != nil {
-		return err
-	}
-
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&appsv1.Deployment{}).
+		For(&mydomainv1.Siphon{}).
+		Named("siphon").
 		Complete(r)
 }

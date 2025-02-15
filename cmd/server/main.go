@@ -15,9 +15,11 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func Start() error {
+func Start(client client.Client, schema *runtime.Scheme) error {
 	db, err := SetupDatabase()
 	if err != nil {
 		return err
@@ -31,7 +33,7 @@ func Start() error {
 	mux := http.NewServeMux()
 	mux.Handle(systemv1connect.NewSystemServiceHandler(&system.SystemService{}))
 	mux.Handle(workload.NewWorkloadServiceHandler(workload.NewWorkloadService(db)))
-	mux.Handle(version.NewVersionServiceHandler(version.NewVersionService(db)))
+	mux.Handle(version.NewVersionServiceHandler(version.NewVersionService(db, client, schema)))
 	corsHandler := cors.AllowAll().Handler(h2c.NewHandler(mux, &http2.Server{}))
 	http.ListenAndServe(
 		"localhost:8080",

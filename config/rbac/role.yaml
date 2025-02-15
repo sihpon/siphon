@@ -5,9 +5,8 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - siphon.my.domain
+  - my.domain
   resources:
-  - siphonconfigs
   - siphons
   verbs:
   - create
@@ -18,16 +17,14 @@ rules:
   - update
   - watch
 - apiGroups:
-  - siphon.my.domain
+  - my.domain
   resources:
-  - siphonconfigs/finalizers
   - siphons/finalizers
   verbs:
   - update
 - apiGroups:
-  - siphon.my.domain
+  - my.domain
   resources:
-  - siphonconfigs/status
   - siphons/status
   verbs:
   - get
