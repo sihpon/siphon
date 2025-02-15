@@ -1,10 +1,23 @@
-import { ListResponse } from '@/generated/workload/v1/workload_pb'
-import APIClient from '@/util/api-client'
+import { create } from '@bufbuild/protobuf'
+import { ListResponse, ListResponseSchema } from '../generated/workload/v1/workload_pb'
+import Client from '../util/client'
 import { timestampDate } from '@bufbuild/protobuf/wkt'
 import Link from 'next/link'
+import React from 'react'
 
-export default async function Page() {
-  const response: ListResponse = await new APIClient().Workload().List()
+export default function Page() {
+  let response: ListResponse = create(ListResponseSchema);
+  new Client().Workload().List((error: any, res: ListResponse) => {
+    console.log("feching workloads");
+    console.log(error);
+    console.log(res);
+    if (error) {
+      console.error(error)
+      return
+    }
+    response = res
+  });
+
   return (
     <table className="table">
       <thead>

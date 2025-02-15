@@ -2,7 +2,7 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 import { createClient } from "@connectrpc/connect";
 import { WorkloadService, CreateRequest } from "@/generated/workload/v1/workload_pb";
 
-export default class Client {
+export default class APIClient {
   private tp: any
 
   constructor() {
@@ -12,7 +12,7 @@ export default class Client {
     });
   }
 
-  Workload(): any {
+  Workload(): Workload {
     return new Workload(this.tp);
   }
 }
@@ -22,7 +22,6 @@ export class Workload {
 
   constructor(tp: any) {
     this.client = createClient(WorkloadService, tp);
-    console.log(this.client)
   }
 
   async Get(id: string) {
