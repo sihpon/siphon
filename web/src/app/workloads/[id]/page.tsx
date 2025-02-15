@@ -3,12 +3,14 @@ import APIClient from "@/util/api-client"
 import Button from "./components/button"
 import { notFound } from "next/navigation"
 
-
-export default async function Page(
-  { params }: { params: { id: string } },
-) {
-  const id = params.id
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const id = (await params).id
   let response: GetResponse
+
   try {
     response = await new APIClient().Workload().Get(id)
   } catch (error) {
