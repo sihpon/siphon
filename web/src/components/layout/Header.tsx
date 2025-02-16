@@ -20,7 +20,7 @@ const Header = ({ title }: HeaderProps) => {
           <li><Link href="/workloads">Workloads</Link></li>
           <li>
             <details>
-              <summary>Parent</summary>
+              <summary>siphonist@example.com</summary>
               <ul className="bg-base-100 rounded-t-none p-2">
                 <li><a>Link 1</a></li>
                 <li><a>Link 2</a></li>
