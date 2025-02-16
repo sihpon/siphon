@@ -28,9 +28,29 @@ type SiphonManagedWorkloadSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of SiphonManagedWorkload. Edit siphonmanagedworkload_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	ID          string      `json:"id"`
+	Namespace   string      `json:"namespace"`
+	Name        string      `json:"name,omitempty"`
+	Version     string      `json:"version,omitempty"`
+	Description string      `json:"description,omitempty"`
+	Labels      []string    `json:"labels,omitempty"`
+	Artifacts   []Artifact  `json:"artifacts,omitempty"`
+	CreatedAt   metav1.Time `json:"createdAt,omitempty"`
+	UpdatedAt   metav1.Time `json:"updatedAt,omitempty"`
 }
+
+type Artifact struct {
+	ArtifactType ArtifactType `json:"type,omitempty"`
+	Name         string       `json:"name,omitempty"`
+	Tag          string       `json:"tag,omitempty"`
+}
+
+type ArtifactType string
+
+const (
+	Container ArtifactType = "container"
+	Asset     ArtifactType = "asset"
+)
 
 // SiphonManagedWorkloadStatus defines the observed state of SiphonManagedWorkload.
 type SiphonManagedWorkloadStatus struct {
