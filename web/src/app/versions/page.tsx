@@ -15,16 +15,16 @@ export default async function Page() {
           </tr>
         </thead>
         <tbody>
-          {response.versions.map((workload) => (
-            <tr key={workload.id}>
+          {response.versions.map((version) => (
+            <tr key={version.id}>
               <td>
-                <span className="font-bold text-lg">{workload.id}</span><br />
+                <span className="font-bold text-lg">{version.id}</span><br />
               </td>
               <td>
-                <span className="font-bold">{workload.description}</span>
+                <span className="font-bold">{version.description}</span>
               </td>
               <td>
-                <Link className="btn btn-neutral" href={`/version/${workload.id}`}>
+                <Link className="btn btn-neutral" href={`/version/${version.id}`}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5"
                     stroke="currentColor" className="size-[1.2em]">
                     <path strokeLinecap="round" strokeLinejoin="round"
