@@ -7,33 +7,29 @@ import (
 
 	v1 "github.com/siphon/siphon/api/v1"
 	workloadv1 "github.com/siphon/siphon/generated/workload/v1"
-	"github.com/siphon/siphon/internal/model"
+	"github.com/siphon/siphon/internal/container"
 	"github.com/siphon/siphon/internal/repository"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"gorm.io/gorm"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type WorkloadService struct {
-	db     *gorm.DB
-	Client client.Client
+	container container.Containerer
 }
 
 func NewWorkloadService(
-	db *gorm.DB,
-	client client.Client,
+	container container.Containerer,
 ) *WorkloadService {
 	return &WorkloadService{
-		db:     db,
-		Client: client,
+		container: container,
 	}
 }
 
 var _ Workloader = &WorkloadService{}
 
 func (s *WorkloadService) List(ctx context.Context, req *workloadv1.ListRequest) (*workloadv1.ListResponse, error) {
-	repo := &repository.WorkloadRepositoryImpl{Client: s.Client}
+	repo := &repository.WorkloadRepositoryImpl{Client: s.container.KubeClient()}
 	workloads, err := repo.All(ctx)
 	if err != nil {
 		return nil, err
@@ -58,7 +54,7 @@ func (s *WorkloadService) List(ctx context.Context, req *workloadv1.ListRequest)
 
 func (s *WorkloadService) Get(ctx context.Context, request *workloadv1.GetRequest) (*workloadv1.GetResponse, error) {
 	workload := &v1.SiphonManagedWorkload{}
-	if err := s.Client.Get(ctx, client.ObjectKey{Namespace: "default", Name: request.Id}, workload); err != nil {
+	if err := s.container.KubeClient().Get(ctx, client.ObjectKey{Namespace: "default", Name: request.Id}, workload); err != nil {
 		return nil, err
 	}
 
@@ -96,7 +92,7 @@ func (s *WorkloadService) Create(ctx context.Context, request *workloadv1.Create
 		},
 	}
 
-	repo := &repository.WorkloadRepositoryImpl{Client: s.Client}
+	repo := &repository.WorkloadRepositoryImpl{Client: s.container.KubeClient()}
 	if err := repo.Create(ctx, &workload); err != nil {
 		return nil, err
 	}
@@ -114,26 +110,11 @@ func (s *WorkloadService) Create(ctx context.Context, request *workloadv1.Create
 }
 
 func (s *WorkloadService) Update(ctx context.Context, request *workloadv1.UpdateRequest) (*workloadv1.UpdateResponse, error) {
-	workload := &model.Workload{}
-	if err := s.db.First(&workload, request.Workload.Id).Error; err != nil {
-		return nil, err
-	}
-
-	workload.Name = request.Workload.Name
-	workload.Description = request.Workload.Description
-	workload.Version = request.Workload.Version
-
-	if err := s.db.Save(&workload).Error; err != nil {
-		return nil, err
-	}
-
-	return &workloadv1.UpdateResponse{
-		Workload: request.Workload,
-	}, nil
+	panic("not implemented")
 }
 
 func (s *WorkloadService) Delete(ctx context.Context, request *workloadv1.DeleteRequest) (*workloadv1.DeleteResponse, error) {
-	if err := s.Client.Delete(ctx, &v1.SiphonManagedWorkload{ObjectMeta: metav1.ObjectMeta{Name: request.Id, Namespace: "default"}}); err != nil {
+	if err := s.container.KubeClient().Delete(ctx, &v1.SiphonManagedWorkload{ObjectMeta: metav1.ObjectMeta{Name: request.Id, Namespace: "default"}}); err != nil {
 		return nil, err
 	}
 

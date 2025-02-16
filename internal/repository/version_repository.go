@@ -5,16 +5,15 @@ import (
 	"errors"
 
 	v1 "github.com/siphon/siphon/api/v1"
-	"github.com/siphon/siphon/internal/model"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type VersionRepository interface {
-	CreateOrUpdate(ctx context.Context, version *model.Version) error
-	Find(ctx context.Context, id string) (*model.Version, error)
-	All(ctx context.Context) ([]*model.Version, error)
+	CreateOrUpdate(ctx context.Context, version *v1.Version) error
+	Find(ctx context.Context, id string) (*v1.Version, error)
+	All(ctx context.Context) ([]*v1.Version, error)
 	Delete(ctx context.Context, id string) error
 }
 
@@ -22,7 +21,7 @@ type VersionRepositoryImpl struct {
 	Client client.Client
 }
 
-func (v *VersionRepositoryImpl) CreateOrUpdate(ctx context.Context, version *model.Version) error {
+func (v *VersionRepositoryImpl) CreateOrUpdate(ctx context.Context, version *v1.Version) error {
 	siphon := &v1.Siphon{}
 	err := v.Client.Get(ctx, client.ObjectKey{Namespace: "default", Name: "siphon"}, siphon)
 	if client.IgnoreNotFound(err) != nil {
@@ -35,7 +34,7 @@ func (v *VersionRepositoryImpl) CreateOrUpdate(ctx context.Context, version *mod
 		notFounded = true
 	}
 
-	siphon.Spec.Versions[version.Version] = version.Description
+	siphon.Spec.Versions = append(siphon.Spec.Versions, *version)
 
 	if notFounded {
 		err = v.Client.Create(ctx, siphon)
@@ -46,40 +45,35 @@ func (v *VersionRepositoryImpl) CreateOrUpdate(ctx context.Context, version *mod
 	return err
 }
 
-func (v *VersionRepositoryImpl) All(ctx context.Context) ([]*model.Version, error) {
+func (v *VersionRepositoryImpl) All(ctx context.Context) ([]*v1.Version, error) {
 	siphon := &v1.Siphon{}
 	err := v.Client.Get(ctx, client.ObjectKey{Namespace: "default", Name: "siphon"}, siphon)
 	if err != nil {
 		return nil, err
 	}
 
-	var versions []*model.Version
-	for version, description := range siphon.Spec.Versions {
-		versions = append(versions, &model.Version{
-			Version:     version,
-			Description: description,
-		})
+	var versions []*v1.Version
+	for _, version := range siphon.Spec.Versions {
+		versions = append(versions, &version)
 	}
 
 	return versions, nil
 }
 
-func (v *VersionRepositoryImpl) Find(ctx context.Context, id string) (*model.Version, error) {
+func (v *VersionRepositoryImpl) Find(ctx context.Context, id string) (*v1.Version, error) {
 	siphon := &v1.Siphon{}
 	err := v.Client.Get(ctx, client.ObjectKey{Namespace: "default", Name: "siphon"}, siphon)
 	if err != nil {
 		return nil, err
 	}
 
-	description, ok := siphon.Spec.Versions[id]
-	if !ok {
-		return nil, errors.New("version not found")
+	for _, version := range siphon.Spec.Versions {
+		if version.ID == id {
+			return &version, nil
+		}
 	}
 
-	return &model.Version{
-		Version:     id,
-		Description: description,
-	}, nil
+	return nil, errors.New("version not found")
 }
 
 func (v *VersionRepositoryImpl) Delete(ctx context.Context, id string) error {
@@ -89,7 +83,11 @@ func (v *VersionRepositoryImpl) Delete(ctx context.Context, id string) error {
 		return err
 	}
 
-	delete(siphon.Spec.Versions, id)
+	for _, version := range siphon.Spec.Versions {
+		if version.ID == id {
+			version = v1.Version{}
+		}
+	}
 
 	return v.Client.Update(ctx, siphon)
 }

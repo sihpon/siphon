@@ -4,14 +4,10 @@ import (
 	"context"
 
 	v1 "github.com/siphon/siphon/api/v1"
-	"github.com/siphon/siphon/internal/model"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type WorkloadRepository interface {
-	CreateOrUpdate(ctx context.Context, version *model.Workload) error
-	Find(ctx context.Context, id string) (*model.Workload, error)
-	All(ctx context.Context) ([]*model.Workload, error)
 	Delete(ctx context.Context, id string) error
 }
 

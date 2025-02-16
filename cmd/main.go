@@ -45,6 +45,7 @@ import (
 	mydomainv1 "github.com/siphon/siphon/api/v1"
 	"github.com/siphon/siphon/cmd/config"
 	"github.com/siphon/siphon/cmd/server"
+	"github.com/siphon/siphon/internal/container"
 	"github.com/siphon/siphon/internal/controller"
 	// +kubebuilder:scaffold:imports
 )
@@ -256,12 +257,13 @@ func main() {
 		panic(err)
 	}
 
+	container := container.NewContainer(mgr.GetClient())
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.Go(func() error {
 		return mgr.Start(ctrl.SetupSignalHandler())
 	})
 	eg.Go(func() error {
-		return server.Start(mgr.GetClient(), mgr.GetScheme())
+		return server.Start(container)
 	})
 
 	quit := make(chan os.Signal, 1)

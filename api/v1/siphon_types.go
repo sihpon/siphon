@@ -29,9 +29,18 @@ type SiphonSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Siphon. Edit siphon_types.go to remove/update
-	Foo      string            `json:"foo,omitempty"`
-	Versions map[string]string `json:"versions,omitempty"`
-	Labels   map[string]string `json:"labels,omitempty"`
+	Foo      string    `json:"foo,omitempty"`
+	Versions []Version `json:"versions,omitempty"`
+	Labels   []Label   `json:"labels,omitempty"`
+}
+
+type Version struct {
+	ID string `json:"id,omitempty"`
+}
+
+type Label struct {
+	ID          string `json:"id,omitempty"`
+	Description string `json:"description,omitempty"`
 }
 
 // SiphonStatus defines the observed state of Siphon.
