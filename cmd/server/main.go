@@ -32,7 +32,7 @@ func Start(client client.Client, schema *runtime.Scheme) error {
 	log.Println("Starting server on localhost:8080")
 	mux := http.NewServeMux()
 	mux.Handle(systemv1connect.NewSystemServiceHandler(&system.SystemService{}))
-	mux.Handle(workload.NewWorkloadServiceHandler(workload.NewWorkloadService(db)))
+	mux.Handle(workload.NewWorkloadServiceHandler(workload.NewWorkloadService(db, client)))
 	mux.Handle(version.NewVersionServiceHandler(version.NewVersionService(db, client, schema)))
 	corsHandler := cors.AllowAll().Handler(h2c.NewHandler(mux, &http2.Server{}))
 	http.ListenAndServe(
